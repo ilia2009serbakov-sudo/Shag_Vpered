@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Центр развития «Шаг вперёд» — Иркутск</title>
+
+  <!-- 2 шрифта: Rubik (название) и Nunito (текст) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Rubik:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --main: #0F4C5C;     
+      --accent: #F6745F;   
+      --paper: #FDF6EC;    
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--paper);
+      color: var(--main);
+    }
+
+    /* ===== Первый экран: текст слева, лестница справа ===== */
+    .hero {
+      min-height: 100svh;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      align-items: center;
+      gap: 48px;
+    }
+
+    /* Подпись над названием */
+    .label {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      opacity: .75;
+    }
+
+    /* Название */
+    h1 {
+      font-family: 'Rubik', sans-serif;
+      font-weight: 700;
+      font-size: clamp(48px, 8vw, 104px);
+      line-height: 1;
+      letter-spacing: -.02em;
+      margin: 20px 0 26px;
+    }
+
+    /* Слово «вперёд» акцентным цветом + стрелка */
+    .fwd {
+    color: var(--accent);
+    white-space: nowrap;            /* слово и стрелка не разъезжаются по строкам */
+    }
+
+    /* Стрелка рисуется один раз после появления страницы */
+    .arrow {
+    width: .7em;
+    height: .28em;
+    margin-left: .15em;
+    vertical-align: middle;
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+    animation: arrow-draw .9s ease 1s forwards;
+    }
+
+    @keyframes arrow-draw { to { stroke-dashoffset: 0; } }
+
+    /* Суть одной фразой */
+    .lead {
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.55;
+      max-width: 470px;
+      margin-bottom: 36px;
+    }
+
+    /* Единственная кнопка с контактом */
+    .btn {
+      display: inline-block;
+      background: var(--main);
+      color: var(--paper);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 17px;
+      padding: 18px 36px;
+      border-radius: 999px;
+      transition: background-color .25s ease, color .25s ease; /* только цвет */
+    }
+
+    /* Наведение только на устройствах с мышью: просто меняем цвет */
+    @media (hover: hover) {
+      .btn:hover { background: var(--accent); color: var(--main); }
+    }
+
+    /* Обводка при навигации с клавиатуры */
+    .btn:focus-visible {
+      outline: 2px solid var(--main);
+      outline-offset: 4px;
+    }
+
+    /* ===== Лестница ===== */
+    .stairs {
+      display: flex;
+      align-items: flex-end;           /* ступени стоят на одной линии снизу */
+      gap: 12px;
+      height: min(62vh, 480px);
+      overflow: hidden;                /* ступени «выезжают» из-под нижней границы */
+    }
+
+    .step {
+      flex: 1;
+      background: var(--main);
+      border-radius: 22px 22px 0 0;
+      transform: translateY(100%);     /* до анимации спрятаны ниже */
+      animation: rise .8s cubic-bezier(.2, .8, .2, 1) forwards;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 18px;
+    }
+
+    /* Высота и прозрачность каждой ступени + задержка появления */
+    .step:nth-child(1) { height: 20%; opacity: .2;  animation-delay: .10s; }
+    .step:nth-child(2) { height: 38%; opacity: .4;  animation-delay: .25s; }
+    .step:nth-child(3) { height: 56%; opacity: .6;  animation-delay: .40s; }
+    .step:nth-child(4) { height: 74%; opacity: .8;  animation-delay: .55s; }
+    .step:nth-child(5) { height: 92%; opacity: 1;   animation-delay: .70s; background: var(--accent); }
+
+    @keyframes rise { to { transform: translateY(0); } }
+
+    /* Сердечко на верхней ступени */
+    .heart {
+      width: 44%;
+      max-width: 56px;
+      fill: var(--main);
+      opacity: 0;
+      animation: fade .6s ease 1.3s forwards;
+    }
+    @keyframes fade { to { opacity: 1; } }
+
+    /* Для тех, у кого отключена анимация */
+    @media (prefers-reduced-motion: reduce) {
+      .step  { animation: none; transform: none; }
+      .heart { animation: none; opacity: 1; }
+      .arrow { animation: none; stroke-dashoffset: 0; }
+    }
+
+    /* ===== Мобильная версия: лестница под текстом ===== */
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 28px; }
+      .stairs { height: 240px; }
+      .btn { display: block; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="hero">
+
+    <!-- Текст -->
+    <section>
+      <div class="label">Центр развития · Иркутск</div>
+
+      <h1>Шаг <span class="fwd">вперёд<svg class="arrow" viewBox="0 0 60 24" aria-hidden="true"><path d="M2 12h52M42 3l12 9-12 9"/></svg></span></h1>
+
+      <p class="lead">
+        С любовью к особым детям — ранняя помощь, дефектолог,
+        логопед и нейропсихолог в одном центре.
+      </p>
+
+      <a class="btn" href="https://vk.ru/shag_vpered38">Написать нам во ВКонтакте</a>
+    </section>
+
+    <!-- Лестница из пяти ступеней -->
+    <div class="stairs" aria-hidden="true">
+      <div class="step"></div>
+      <div class="step"></div>
+      <div class="step"></div>
+      <div class="step"></div>
+      <div class="step">
+        <!-- Сердечко -->
+        <svg class="heart" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 2.8 4.5 6.4 4.5c2.1 0 3.9 1.2 5.6 3.3 1.7-2.1 3.5-3.3 5.6-3.3 3.6 0 5.5 3.7 4 7.2C19.500 16.400 12 21 12 21z"/>
+        </svg>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>
